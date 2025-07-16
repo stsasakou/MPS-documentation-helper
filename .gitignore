@@ -1,0 +1,12 @@
+/.venv
+/.vscode/*
+!/.vscode/launch.json
+/*.log
+/__pycache__
+
+
+# Ignore all .txt, .xlsx, .csv, and .json files
+*.txt
+*.xlsx
+*.csv
+*.json

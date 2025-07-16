@@ -1,0 +1,107 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><link rel="canonical" href="https://www.jetbrains.com/help/mps/using-model-module-dependencies-faq.html" data-react-helmet="true"/><meta charset="UTF-8"></meta><meta name="built-on" content="2024-08-08T15:14:17.461432358"><meta name="build-number" content="170"><title>Using model &amp; module dependencies FAQ | MPS Documentation</title><script type="application/json" id="virtual-toc-data">[]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/storage/help-app/v6/app.css" rel="stylesheet"><link rel="manifest" href="https://www.jetbrains.com/site.webmanifest"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><!-- Open Graph --><meta property="og:title" content="Using model &amp; module dependencies FAQ | MPS"><meta property="og:description" content=""><meta property="og:image" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><meta property="og:site_name" content="MPS Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="https://www.jetbrains.com/help/mps/using-model-module-dependencies-faq.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@jetbrains_MPS"><meta name="twitter:title" content="Using model &amp; module dependencies FAQ | MPS"><meta name="twitter:description" content=""><meta name="twitter:creator" content="@jetbrains_MPS"><meta name="twitter:image:src" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.jetbrains.com/help/mps/using-model-module-dependencies-faq.html#webpage",
+    "url": "https://www.jetbrains.com/help/mps/using-model-module-dependencies-faq.html",
+    "name": "Using model &amp; module dependencies FAQ | MPS",
+    "description": "",
+    "image": "https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "https://www.jetbrains.com/help/mps/#website",
+    "url": "https://www.jetbrains.com/help/mps/",
+    "name": "MPS Help"
+}</script><!-- End Schema.org --><script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&amp;l=' + l : '';
+        j.async = true;
+        j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5P98');
+</script>
+<script src="https://resources.jetbrains.com/storage/help-app/v6/analytics.js"></script>
+</head><body data-id="using-model-module-dependencies-faq" data-main-title="Using model &amp; module dependencies FAQ" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="mps-user-s-guide.topic|MPS User's Guide///platform-languages.topic|Platform-languages///smodel-language.topic|SModel language///open-api-accessing-models-from-code.topic|Open API - accessing models from code"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MPS 2024.1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="using-model-module-dependencies-faq" id="using-model-module-dependencies-faq.topic">Using model &amp; module dependencies FAQ</h1><div class="code-block" data-lang="none">
+         // Entry point
+         // accessing model of the node
+         model m = node.model;
+         /* "Down-"casting it to the interface from MPS open API.  Similarly this will work on node&lt;&gt; -&gt; SNode, enumeration -&gt; SEnumeration,  concept -&gt; SConcept */
+         SModel sModel = m;
+         /* "Up-"casting an interface from MPS open API to an smodel language type. Similarly this will work on SNode -&gt; node&lt;&gt;, SEnumeration -&gt; enumeration, SConcept -&gt; concept */
+         model m2 = sModel;
+
+         // non-open API interface for MPS model
+         SModelInternal internalSModel = (SModelInternal) sModel;
+         // accessing the module owning the model
+         SModule sModule = sModel.getModule();
+      </div><div class="code-block" data-lang="none">
+         // Repository or modules
+         // accessing repository of modules
+         SRepository sRepository = sModel.getRepository();
+         // accessing modules from the repository
+         Iterable&lt;SModule&gt; modules = sRepository.getModules();
+         SModule module = sRepository.getModule(sModule.getModuleId());
+         SModule closuresRuntimeModule = sRepository.getModule(
+         module reference
+         /closures.runtime/.getModuleId());
+      </div><div class="code-block" data-lang="none">
+         // Languages are represented as a special module type
+         if (module instanceof Language) {
+            Language language = (Language) module;
+         }
+      </div><div class="code-block" data-lang="none">
+         // Getting language by "direct" reference:
+         // Note: no repository is mentioned here. In the MPS we actually have single repository now,
+         // so you can use this expression to get module from the single repository
+         Language mpsBaseLanguage = (Language)
+         module
+         /jetbrains.mps.baseLanguage/;</div><div class="code-block" data-lang="none">
+         // Module dependencies
+
+         // accessing module dependencies
+         &lt;SDependency&gt; dependencies = module.getDeclaredDependencies()
+      </div><div class="code-block" data-lang="none">
+         // adding used language to a module
+
+         AbstractModule internalModule = (AbstractModule) sModule;
+         internalModule.getModuleDescriptor().getUsedLanguages().add(
+         module reference
+         /jetbrains.mps.baseLanguage/);
+      </div><div class="code-block" data-lang="none">
+         // modify module dependencies
+
+         &lt;Dependency&gt; internalDependencies = internalModule.getModuleDescriptor().getDependencies();
+         &lt;SModuleReference&gt; usedModuleReferences = internalDependencies.select({~it =&gt; it.getModuleRef(); });
+         internalModule.getModuleDescriptor().getDependencies().add(new Dependency(module reference/closures.runtime/, SDependencyScope.DEFAULT, false));
+      </div><div class="code-block" data-lang="none">
+         // working with DevKits:
+
+         internalModule.getModuleDescriptor().getUsedDevkits().add(
+         module reference
+         /jetbrains.mps.devkit.general-purpose/);
+      </div><div class="code-block" data-lang="none">
+         // Models
+
+         // accessing models from the module
+         Iterable&lt;SModel&gt; models = sModule.getModels();
+         sModule.getModel(sModel.getModelId());
+      </div><div class="code-block" data-lang="none">
+         // working with imported models:
+
+         internalSModel.importedModels();
+         internalSModel.addModelImport(sModel.getReference(), false);
+         internalSModel.deleteModelImport(sModel.getReference());
+      </div><div class="code-block" data-lang="none">
+         // working with imported languages:
+         internalSModel.importedLanguages();
+         internalSModel.addLanguage(mpsBaseLanguage.getModuleReference());
+         internalSModel.addLanguage(module reference/jetbrains.mps.baseLanguage/);
+      </div><div class="code-block" data-lang="none">
+         // working with imported DevKits
+         internalSModel.importedDevkits();
+         internalSModel.addDevKit(module reference/jetbrains.mps.devkit.general-purpose/);
+         internalSModel.deleteDevKit(module reference/jetbrains.mps.devkit.general-purpose/);
+      </div><div class="last-modified">Last modified: 11 February 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="open-api-accessing-models-from-code.html" class="navigation-links__prev">Open API - accessing models from code</a><a href="pattern.html" class="navigation-links__next">Pattern</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/storage/help-app/v6/app.js"></script></body></html>

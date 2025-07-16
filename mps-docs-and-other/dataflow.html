@@ -1,0 +1,98 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><link rel="canonical" href="https://www.jetbrains.com/help/mps/dataflow.html" data-react-helmet="true"/><meta charset="UTF-8"></meta><meta name="built-on" content="2024-08-08T15:14:23.25997286"><meta name="build-number" content="170"><title>Dataflow | MPS Documentation</title><script type="application/json" id="virtual-toc-data">[{"id":"readingavalue","level":0,"title":"Reading a value","anchor":"#readingavalue"},{"id":"writingavalue","level":0,"title":"Writing a value","anchor":"#writingavalue"},{"id":"codefor","level":0,"title":"Code for","anchor":"#codefor"},{"id":"jump","level":0,"title":"Jump","anchor":"#jump"},{"id":"ifjump","level":0,"title":"Ifjump","anchor":"#ifjump"},{"id":"insertinginstructions","level":0,"title":"Inserting instructions","anchor":"#insertinginstructions"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/storage/help-app/v6/app.css" rel="stylesheet"><link rel="manifest" href="https://www.jetbrains.com/site.webmanifest"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><!-- Open Graph --><meta property="og:title" content="Dataflow | MPS"><meta property="og:description" content=""><meta property="og:image" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><meta property="og:site_name" content="MPS Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="https://www.jetbrains.com/help/mps/dataflow.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@jetbrains_MPS"><meta name="twitter:title" content="Dataflow | MPS"><meta name="twitter:description" content=""><meta name="twitter:creator" content="@jetbrains_MPS"><meta name="twitter:image:src" content="https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png"><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.jetbrains.com/help/mps/dataflow.html#webpage",
+    "url": "https://www.jetbrains.com/help/mps/dataflow.html",
+    "name": "Dataflow | MPS",
+    "description": "",
+    "image": "https://resources.jetbrains.com/storage/products/mps/img/meta/preview.png",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "https://www.jetbrains.com/help/mps/#website",
+    "url": "https://www.jetbrains.com/help/mps/",
+    "name": "MPS Help"
+}</script><!-- End Schema.org --><script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&amp;l=' + l : '';
+        j.async = true;
+        j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5P98');
+</script>
+<script src="https://resources.jetbrains.com/storage/help-app/v6/analytics.js"></script>
+</head><body data-id="dataflow" data-main-title="Dataflow" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="mps-user-s-guide.topic|MPS User's Guide///mps-tutorials.topic|Tutorials"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>MPS 2024.1 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="dataflow" id="dataflow.topic">Dataflow</h1><p id="i07kvn_1">This cookbook should give you quick answers and guidelines when designing dataflow for your languages. For in-depth description of the typesystem please refer to the <a href="data-flow.html" id="i07kvn_2">Dataflow</a> section of the user guide.</p><section class="chapter"><h2 id="readingavalue" data-toc="readingavalue">Reading a value</h2><p id="i07kvn_3">The read operation instructs the dataflow engine that a particular value is read:</p><div class="code-block" data-lang="none">data flow builder for LocalVariableReference {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; if (node.isVariableDefinedInThisMethod()) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; read node.localVariableDeclaration
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }
+}
+</div></section><section class="chapter"><h2 id="writingavalue" data-toc="writingavalue">Writing a value</h2><p id="i07kvn_5">Similarly the write operation indicates that a value gets written to. In the example, a variable declaration with an initializer first executes the initializer through the <em id="i07kvn_6">code for</em> command and then marks the node as being written the result of the initializer:</p><div class="code-block" data-lang="none">data flow builder for LocalVariableDeclaration {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; nop
+&nbsp;&nbsp;&nbsp; if (node.initializer.isNotNull) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code for node.initializer
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; write node = node.initializer
+&nbsp;&nbsp;&nbsp; }
+&nbsp; }
+}
+</div></section><section class="chapter"><h2 id="codefor" data-toc="codefor">Code for</h2><p id="i07kvn_8">As seen above in the <em id="i07kvn_9">LocalVariableDeclaration</em> dataflow or below in the <em id="i07kvn_10">DotExpression</em> dataflow, the <em id="i07kvn_11">code for</em> command indicates nodes that get executed and when. In the <em id="i07kvn_12">DotExpression</em>, for example, code for the operand runs before the actual dot operation:</p><div class="code-block" data-lang="none">data flow builder for DotExpression {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; code for node.operand
+&nbsp;&nbsp;&nbsp; code for node.operation
+&nbsp; }
+}
+</div></section><section class="chapter"><h2 id="jump" data-toc="jump">Jump</h2><p id="i07kvn_14">Dataflow for the <em id="i07kvn_15">TernaryOperatorExpression</em> is a very straightforward example of using both conditional and unconditional jumps. Once the condition gets evaluated we can optionally jump to the <em id="i07kvn_16">ifFalse</em> branch. Similarly, once the <em id="i07kvn_17">ifTrue</em> branch is completed we unconditionally jump out of the scope of the node:</p><div class="code-block" data-lang="none">data flow builder for TernaryOperatorExpression {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; code for node.condition
+&nbsp;&nbsp;&nbsp; ifjump before node.ifFalse
+&nbsp;&nbsp;&nbsp; code for node.ifTrue
+&nbsp;&nbsp;&nbsp; jump after node
+&nbsp;&nbsp;&nbsp; code for node.ifFalse
+&nbsp; }
+}
+</div></section><section class="chapter"><h2 id="ifjump" data-toc="ifjump">Ifjump</h2><p id="i07kvn_19">The <em id="i07kvn_20">WhileStatement</em> shows a more involved usage of the dataflow language. Not also the built-in detection of boolean constants. Trying to use <em id="i07kvn_21">while(false)</em> will thus be correctly reported by MPS as a while-loop with unreachable body. This is thanks to the unconditional jump to <em id="i07kvn_22">after node</em> if the constant is <em id="i07kvn_23">false</em>.</p><div class="code-block" data-lang="none">data flow builder for WhileStatement {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; code for node.condition
+&nbsp;&nbsp;&nbsp; if (node.condition.isInstanceOf(BooleanConstant)) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node&lt;BooleanConstant&gt; constant = node.condition : BooleanConstant;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!(constant.value)) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jump after node
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; } else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifjump after node
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; code for node.body
+&nbsp;&nbsp;&nbsp; { jump before node }
+&nbsp; }
+}
+</div></section><section class="chapter"><h2 id="insertinginstructions" data-toc="insertinginstructions">Inserting instructions</h2><p id="i07kvn_25">The <em id="i07kvn_26">TryStatement</em> has even more needs from the dataflow language. It must insert extra <em id="i07kvn_27">ifjump</em> instructions to jump to a catch clause wherever the particular exception can be thrown in the code:</p><div class="code-block" data-lang="none">data flow builder for TryStatement {
+&nbsp; (node)-&gt;void {
+&nbsp;&nbsp;&nbsp; try
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (node&lt;CatchClause&gt; c : node.catchClause) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifjump before c
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code for node.body
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (instruction instruction : get code for (node.body)) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (instruction.isRet || instruction.isJump || instruction.isNop) { continue; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (node&lt;CatchClause&gt; catchClause : DataFlowTryCatchUtil.getPossibleCatches(instruction.getSource, node.catchClause)) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert ifjump before catchClause after instruction
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert ifjump after afterCatches after instruction
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { jump after afterCatches }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (node&lt;CatchClause&gt; c : node.catchClause) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code for c
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { jump after afterCatches }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; label afterCatches
+&nbsp;&nbsp;&nbsp; finally
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; code for node.finallyBody
+&nbsp;&nbsp;&nbsp; end
+&nbsp; }
+}
+</div><p id="i07kvn_29">Notice, we're using a few other helper methods and commands here - <em id="i07kvn_30">get code for</em> to retrieve the dataflow instruction set for a node, <em id="i07kvn_31">isRet</em>, <em id="i07kvn_32">isJump</em> and <em id="i07kvn_33">isNop</em> to exclude certain types of instructions (returns, jumps and no-operations respectively), <em id="i07kvn_34">label</em> to create named places in the dataflow instruction set that we can jump to from elsewhere, and finally the <em id="i07kvn_35">insert</em> command to insert a new command into an existing dataflow instruction set.</p></section><div class="last-modified">Last modified: 11 February 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="regular-expressions.html" class="navigation-links__prev">Regular expressions</a><a href="howto-integration-with-the-data-flow-engine.html" class="navigation-links__next">HowTo -- Integration with the Data Flow Engine</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/storage/help-app/v6/app.js"></script></body></html>
