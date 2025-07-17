@@ -7,7 +7,7 @@ You are free to:
 - Adapt — remix, transform, and build upon the material
 
 Under the following terms:
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. Please cite the corresponding research paper: [Insert citation or DOI here].
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. 
 - NonCommercial — You may not use the material for commercial purposes.
 
 To view a copy of this license, visit https://creativecommons.org/licenses/by-nc/4.0/
